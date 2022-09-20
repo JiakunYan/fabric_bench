@@ -1,5 +1,5 @@
 target_include_directories(pmi-obj PUBLIC include)
-target_sources(pmi-obj PUBLIC
+target_sources(pmi-obj PRIVATE
         simple/simple_pmi.c
         simple/simple_pmiutil.c
 )

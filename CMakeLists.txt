@@ -13,22 +13,23 @@ check_c_source_compiles(
     HAVE_RESTRICT
 )
 
-set(FB_SERVER UCX CACHE STRING "Server: OFI MPI IBV UCX")
+set(FB_SERVER IBV CACHE STRING "Server: OFI MPI IBV UCX")
+set_property(CACHE FB_SERVER PROPERTY STRINGS OFI MPI IBV UCX)
 
 LIST(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules")
 
 find_package(OpenMP REQUIRED)
-if("OFI" IN_LIST FB_SERVER)
-    find_package(Fabric REQUIRED)
+if(FB_SERVER STREQUAL "OFI")
+    find_package(OFI REQUIRED)
     set(FB_USE_OFI ON)
 endif()
 
-if("IBV" IN_LIST FB_SERVER)
-    find_package(Fabric REQUIRED)
+if(FB_SERVER STREQUAL "IBV")
+    find_package(IBV REQUIRED)
     set(FB_USE_IBV ON)
 endif()
 
-if("UCX" IN_LIST FB_SERVER)
+if(FB_SERVER STREQUAL "UCX")
     find_package(
             UCX
             REQUIRED COMPONENTS ucp uct ucs
@@ -51,11 +52,15 @@ target_link_libraries(fb_lib INTERFACE
         OpenMP::OpenMP_CXX
 )
 
-if(("IBV" IN_LIST FB_SERVER) OR ("OFI" IN_LIST FB_SERVER))
-    target_link_libraries(fb_lib INTERFACE Fabric::${FB_SERVER})
+if(FB_USE_OFI)
+    target_link_libraries(fb_lib INTERFACE OFI::OFI)
 endif()
 
-if("UCX" IN_LIST FB_SERVER)
+if(FB_USE_IBV)
+    target_link_libraries(fb_lib INTERFACE IBV::IBV)
+endif()
+
+if(FB_USE_UCX)
     target_link_libraries(fb_lib INTERFACE ucx::uct ucx::ucs)
 endif()
 
