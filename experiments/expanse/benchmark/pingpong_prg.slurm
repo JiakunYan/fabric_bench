@@ -10,7 +10,7 @@
 #SBATCH --error=slurm_error_%j.txt
 
 fabric=ucx
-path_to_exe=${1:-/home/zli89/clion_fb/cmake-build-debug/benchmark/${fabric}}
+path_to_exe=${1:-init/build/benchmark}
 allComputeTime=(0 10 100)
 
 for compute_time in ${allComputeTime[@]}; do

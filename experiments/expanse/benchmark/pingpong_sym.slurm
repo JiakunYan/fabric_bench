@@ -10,7 +10,7 @@
 #SBATCH --error=slurm_error_%j.txt
 
 fabric=ofi
-path_to_exe=${1:-/home/zli89/clion_fb/cmake-build-debug/benchmark/${fabric}}
+path_to_exe=${1:-init/build/benchmark}
 
 export OMP_PLACES=cores
 
